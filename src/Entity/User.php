@@ -15,23 +15,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 50)]
+    private ?string $fullName = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $pseudo = null;
+
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column]
     private array $roles = [];
 
+
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
+    private ?string $plainPassword = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $fullName = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $pseudo = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -39,6 +42,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
+    }
+
+    public function setFullName(string $fullName): self
+    {
+        $this->fullName = $fullName;
+
+        return $this;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(?string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -81,7 +108,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -106,30 +132,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getFullName(): ?string
-    {
-        return $this->fullName;
-    }
-
-    public function setFullName(string $fullName): self
-    {
-        $this->fullName = $fullName;
-
-        return $this;
-    }
-
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
-
-    public function setPseudo(?string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -141,4 +143,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+	/**
+	 * @return string|null
+	 */
+	public function getPlainPassword(): ?string {
+		return $this->plainPassword;
+	}
+	
+	/**
+	 * @param string|null $plainPassword 
+	 * @return self
+	 */
+	public function setPlainPassword(?string $plainPassword): self {
+		$this->plainPassword = $plainPassword;
+		return $this;
+	}
 }

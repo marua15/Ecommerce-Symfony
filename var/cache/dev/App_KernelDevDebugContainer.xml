@@ -1994,7 +1994,6 @@
           <argument>C:\xampp\htdocs\EcommerceTP\vendor\symfony\form/Resources/translations</argument>
           <argument>C:\xampp\htdocs\EcommerceTP\vendor\symfony\security-core/Resources/translations</argument>
           <argument>C:\xampp\htdocs\EcommerceTP\vendor\knplabs\knp-paginator-bundle/translations</argument>
-          <argument>C:\xampp\htdocs\EcommerceTP/translations</argument>
           <argument>C:\xampp\htdocs\EcommerceTP\vendor\symfony\framework-bundle/translations</argument>
           <argument>C:\xampp\htdocs\EcommerceTP\vendor\doctrine\doctrine-bundle/translations</argument>
           <argument>C:\xampp\htdocs\EcommerceTP\vendor\doctrine\doctrine-migrations-bundle/translations</argument>
@@ -2007,6 +2006,7 @@
           <argument>C:\xampp\htdocs\EcommerceTP\vendor\symfony\maker-bundle\src/translations</argument>
           <argument>C:\xampp\htdocs\EcommerceTP\vendor\sensio\framework-extra-bundle\src/translations</argument>
           <argument>C:\xampp\htdocs\EcommerceTP\vendor\doctrine\doctrine-fixtures-bundle/translations</argument>
+          <argument>C:\xampp\htdocs\EcommerceTP/translations</argument>
         </argument>
         <argument key="cache_vary" type="collection">
           <argument key="scanned_directories" type="collection">
@@ -2014,7 +2014,6 @@
             <argument>C:\xampp\htdocs\EcommerceTP\vendor\symfony\form/Resources/translations</argument>
             <argument>C:\xampp\htdocs\EcommerceTP\vendor\symfony\security-core/Resources/translations</argument>
             <argument>C:\xampp\htdocs\EcommerceTP\vendor\knplabs\knp-paginator-bundle/translations</argument>
-            <argument>translations</argument>
             <argument>C:\xampp\htdocs\EcommerceTP\vendor\symfony\framework-bundle/translations</argument>
             <argument>C:\xampp\htdocs\EcommerceTP\vendor\doctrine\doctrine-bundle/translations</argument>
             <argument>C:\xampp\htdocs\EcommerceTP\vendor\doctrine\doctrine-migrations-bundle/translations</argument>
@@ -2027,6 +2026,7 @@
             <argument>C:\xampp\htdocs\EcommerceTP\vendor\symfony\maker-bundle\src/translations</argument>
             <argument>C:\xampp\htdocs\EcommerceTP\vendor\sensio\framework-extra-bundle\src/translations</argument>
             <argument>C:\xampp\htdocs\EcommerceTP\vendor\doctrine\doctrine-fixtures-bundle/translations</argument>
+            <argument>translations</argument>
           </argument>
         </argument>
       </argument>

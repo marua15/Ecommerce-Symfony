@@ -25,7 +25,7 @@ class CategoryController extends AbstractController
         );
 
 
-        return $this->render('category/index.html.twig', [
+        return $this->render('pages/category/index.html.twig', [
             'categories'=>$categories,
         ]);
     }
@@ -51,7 +51,7 @@ class CategoryController extends AbstractController
             return $this->redirectToRoute('app_category');
         }
 
-        return $this->render('category/newcat.html.twig',[
+        return $this->render('pages/category/newcat.html.twig',[
             'form'=>$form ->createView()
         ]);
     }
@@ -77,7 +77,7 @@ class CategoryController extends AbstractController
         }
 
 
-        return $this->render('product/editcat.html.twig',[
+        return $this->render('pages/product/editcat.html.twig',[
             'form' => $form->createView()
         ] );
     }

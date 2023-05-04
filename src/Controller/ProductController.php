@@ -26,7 +26,7 @@ class ProductController extends AbstractController
             4
         );
 
-        return $this->render('product/index.html.twig', [
+        return $this->render('pages/product/index.html.twig', [
             // 'controller_name' => 'ProductController', 
             'products' =>  $products
         ]);
@@ -52,7 +52,7 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('app_product');
         }
 
-        return $this->render('product/newprod.html.twig',[
+        return $this->render('pages/product/newprod.html.twig',[
             'form' => $form->createView()
     ]);
     }
@@ -78,7 +78,7 @@ class ProductController extends AbstractController
         }
 
 
-        return $this->render('product/editprod.html.twig',[
+        return $this->render('pages/product/editprod.html.twig',[
             'form' => $form->createView()
         ] );
     }

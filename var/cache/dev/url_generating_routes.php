@@ -24,4 +24,5 @@ return [
     'product_new' => [[], ['_controller' => 'App\\Controller\\ProductController::new'], [], [['text', '/newprod']], [], [], []],
     'product_edit' => [['id'], ['_controller' => 'App\\Controller\\ProductController::edit'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/editprod']], [], [], []],
     'product_delete' => [['id'], ['_controller' => 'App\\Controller\\ProductController::delete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/deleteprod']], [], [], []],
+    'security.login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/connexion']], [], [], []],
 ];

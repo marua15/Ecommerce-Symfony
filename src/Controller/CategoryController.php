@@ -25,7 +25,7 @@ class CategoryController extends AbstractController
         );
 
 
-        return $this->render('pages/category/index.html.twig', [
+        return $this->render('pages/category/listecat.html.twig', [
             'categories'=>$categories,
         ]);
     }

@@ -8,26 +8,26 @@
     <ul class="navbar-nav mr-auto">
 
       <li class="nav-item dropdown1">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Produit
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Liste des produits</a>
-          <a class="dropdown-item" href="#">Ajouter un produit</a>
+          <a class="dropdown-item" href="{{path('app_product')}}">Liste des produits</a>
+          <a class="dropdown-item" href="{{path('product_new')}}">Ajouter un produit</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Modifier un produit</a>
+          <a class="dropdown-item" >Modifier un produit</a>
         </div>
       </li>
 
       <li class="nav-item dropdown2">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Catégorie
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Liste des catégories</a>
-          <a class="dropdown-item" href="#">Ajouter une catégorie</a>
+          <a class="dropdown-item" href="{{path('app_category')}}">Liste des catégories</a>
+          <a class="dropdown-item" href="{{path('category_new')}}">Ajouter une catégorie</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Modifier une catégorie</a>
+          <a class="dropdown-item">Modifier une catégorie</a>
         </div>
       </li>
 

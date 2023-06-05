@@ -60,8 +60,8 @@ class CategoryController extends AbstractController
     public function edit(CategoryRepository $repository, Category $category, Request $request, 
     EntityManagerInterface $manager) : Response
     {
-        // $product = $repository->findOneBy(['id' => $id]);
-        $form=$this->createForm(ProductType::class,$category);
+        // $category = $repository->findOneBy(['id' => $id]);
+        $form=$this->createForm(CategoryType::class,$category);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $category = $form->getData();
@@ -77,7 +77,7 @@ class CategoryController extends AbstractController
         }
 
 
-        return $this->render('pages/product/editcat.html.twig',[
+        return $this->render('pages/category/editcat.html.twig',[
             'form' => $form->createView()
         ] );
     }

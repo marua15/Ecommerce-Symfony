@@ -1,7 +1,6 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
- {%include "_partials/_nav.html.twig" %}
 <div class="container">
 {# read and display just one flash message type #}
 {% for message in app.flashes('success') %}

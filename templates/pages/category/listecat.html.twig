@@ -3,7 +3,6 @@
 {% block title %}Product{% endblock %}
 
 {% block body %}
-         {%include "_partials/_nav.html.twig" %}
 
     <div class="container mt-4">
         <h1>Mes catégories</h1>
@@ -26,7 +25,7 @@
       <table class="table table-hover mt-4">
   <thead>
     <tr>
-      <th scope="col">Type</th>>
+      {# <th scope="col">Type</th>> #}
       <th scope="col">Nom</th>
       <th scope="col">Edition</th>
       <th scope="col">Suppresion</th>
@@ -37,7 +36,7 @@
             
        
     <tr class="table-primary">
-      <th scope="row">{{category.id}}</th>
+      {# <th scope="row">{{category.id}}</th> #}
       <td>{{category.name}}</td>
       <td>
         <a href="{{path('category_edit', {id : category.id }) }}" class="btn

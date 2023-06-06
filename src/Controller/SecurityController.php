@@ -105,6 +105,15 @@ class SecurityController extends AbstractController
         }
 
         // Return a validation error response
-        return new JsonResponse(['message' => 'Validation error', 'errors' => $form->getErrors(true)], JsonResponse::HTTP_BAD_REQUEST);
+        return new JsonResponse(['errors' => $this->getFormErrors($form)], Response::HTTP_BAD_REQUEST);
+    }
+
+    private function getFormErrors($form): array
+    {
+        $errors = [];
+        foreach ($form->getErrors(true, true) as $error) {
+            $errors[] = $error->getMessage();
+        }
+        return $errors;
     }
 }

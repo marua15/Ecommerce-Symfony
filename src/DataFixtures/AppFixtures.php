@@ -43,7 +43,7 @@ class AppFixtures extends Fixture
                             ->setDescription('Description for Product '.$i)
                             ->setInStock(mt_rand(0,50))
                                 ->setPrice(mt_rand(0,100))
-                                ->setImgPath("Images/img1.png")
+                                ->setImgPath('images/img1'.$i.'.png')
                                 ->setCategoryId($category);
                             $manager->persist($product);
         }

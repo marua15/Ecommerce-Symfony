@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -12,7 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 
 
@@ -50,6 +51,18 @@ class ProductType extends AbstractType
                     new Assert\NotBlank,  
                 ]
             ])
+            ->add('imgPath',TextType::class,[
+                'attr'=>[
+                    'class'=>'form-control'
+                ],
+                'label'=>'imgPath :',
+                'label_attr'=>[
+                    'class'=>'form-label'
+                ],
+                // 'constraints'=>[
+                //     new Assert\NotBlank(),
+                // ]
+            ])
             ->add('description', TextareaType::class,[
                 'label' => 'Description',
                 'attr' => [
@@ -70,6 +83,13 @@ class ProductType extends AbstractType
                 ]
 
             ])
+            ->add('category_id',EntityType::class,[
+                'class' => Category::class,
+                'choice_label' => 'name',
+                'attr'=>[
+                    'class'=>'form-control'
+                ]
+           ])
             ->add('submit', SubmitType::class,[
                 'label' => 'Ajouter',
                 'attr' => [
@@ -80,17 +100,12 @@ class ProductType extends AbstractType
         ;
     }
 
-    // public function configureOptions(OptionsResolver $resolver): void
-    // {
-    //     $resolver->setDefaults([
-    //         'data_class' => Product::class,
-    //     ]);
-    // }
-
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'csrf_protection' => true, // Add this line to enable CSRF protection
+            'data_class' => Product::class,
         ]);
     }
+
+   
 }

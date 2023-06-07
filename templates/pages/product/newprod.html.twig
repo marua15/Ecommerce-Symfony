@@ -47,6 +47,18 @@
         {{ form_errors(form.inStock) }}
       </div>  
     </div>
+
+    <div class="form-group">
+      {{ form_label(form.category_id) }}
+      {{ form_widget(form.category_id) }}
+      <div style="color:red;"><b>{{form_errors(form.category_id) }}</b></div>
+    </div>
+
+     <div class="form-group" >
+        {{ form_label(form.imgPath) }}
+        {{ form_widget(form.imgPath) }}
+        <div style="color:red;"><b>{{form_errors(form.imgPath) }}</b></div>
+      </div>
     
 
     <div class="form-group">

@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CategoryController extends AbstractController
 {
@@ -32,137 +31,82 @@ class CategoryController extends AbstractController
     }
 
 
-    // #[Route('/newcat', name: 'category_new', methods:['GET', 'POST'])]
-    #[Route('/newcat', name: 'category_new', methods:['POST'])]
-    // public function new(Request $request, EntityManagerInterface $manager) : Response
-    // {
-    //     $category = new Category ();
-    //     $form=$this->createForm(CategoryType::class, $category);
-
-    //     $form->handleRequest($request);
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         $category=$form->getData();
-
-    //         $manager->persist($category);
-    //         $manager->flush();
-
-    //         $this->addFlash(
-    //             'success',
-    //             'Votre catégorire a été ajouté avec succès!!'
-    //         );
-
-    //         return $this->redirectToRoute('app_category');
-    //     }
-
-    //     return $this->render('pages/category/newcat.html.twig',[
-    //         'form'=>$form ->createView()
-    //     ]);
-    // }
-    public function new(Request $request, EntityManagerInterface $manager): JsonResponse
+    #[Route('/newcat', name: 'category_new', methods:['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $manager) : Response
     {
-        $requestData = json_decode($request->getContent(), true);
+        $category = new Category ();
+        $form=$this->createForm(CategoryType::class, $category);
 
-        $category = new Category();
-        $form = $this->createForm(CategoryType::class, $category);
-        $form->submit($requestData);
-
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $category=$form->getData();
+
             $manager->persist($category);
             $manager->flush();
 
-            return new JsonResponse(['message' => 'Votre catégorie a été ajoutée avec succès!!'], Response::HTTP_CREATED);
+            $this->addFlash(
+                'success',
+                'Votre catégorire a été ajouté avec succès!!'
+            );
+
+            return $this->redirectToRoute('app_category');
         }
 
-        return new JsonResponse(['errors' =>$this->getFormErrors($form)], Response::HTTP_BAD_REQUEST);
+        return $this->render('pages/category/newcat.html.twig',[
+            'form'=>$form ->createView()
+        ]);
     }
 
-    // #[Route('editcat/{id}', name: 'category_edit', methods:['GET', 'POST'])]
-    #[Route('editcat/{id}', name: 'category_edit', methods:['POST'])]
-    // public function edit(CategoryRepository $repository, Category $category, Request $request, 
-    // EntityManagerInterface $manager) : Response
-    // {
-    //     // $category = $repository->findOneBy(['id' => $id]);
-    //     $form=$this->createForm(CategoryType::class,$category);
-    //     $form->handleRequest($request);
-    //     if($form->isSubmitted() && $form->isValid()){
-    //         $category = $form->getData();
-
-    //         $manager->persist($category);
-    //         $manager->flush();
-
-    //         $this->addFlash(
-    //             'success',
-    //             'La catégorie a été modifié avec succès!!'
-    //          );
-    //         return $this->redirectToRoute('app_category');
-    //     }
-
-
-    //     return $this->render('pages/category/editcat.html.twig',[
-    //         'form' => $form->createView()
-    //     ] );
-    // }
-
-    public function edit(CategoryRepository $repository, Category $category, Request $request, EntityManagerInterface $manager): JsonResponse
+    #[Route('editcat/{id}', name: 'category_edit', methods:['GET', 'POST'])]
+    public function edit(CategoryRepository $repository, Category $category, Request $request, 
+    EntityManagerInterface $manager) : Response
     {
-        $requestData = json_decode($request->getContent(), true);
+        // $category = $repository->findOneBy(['id' => $id]);
+        $form=$this->createForm(CategoryType::class,$category);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $category = $form->getData();
 
-        $form = $this->createForm(CategoryType::class, $category);
-        $form->submit($requestData);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($category);
             $manager->flush();
 
-            return new JsonResponse(['message' => 'La catégorie a été modifiée avec succès!!'], Response::HTTP_OK);
+            $this->addFlash(
+                'success',
+                'La catégorie a été modifié avec succès!!'
+             );
+            return $this->redirectToRoute('app_category');
         }
 
-        return new JsonResponse(['errors' => $this->getFormErrors($form)], Response::HTTP_BAD_REQUEST);
+
+        return $this->render('pages/category/editcat.html.twig',[
+            'form' => $form->createView()
+        ] );
     }
 
-    // #[Route('/deletecat/{id}', name: 'category_delete', methods:[ 'GET'])]
-    #[Route('/deletecat/{id}', name: 'category_delete', methods:[ 'DELETE'])]
-    // public function delete(EntityManagerInterface $manager, Category $category) : Response
-    // {
-    //     if (!$category) {
-    //         $this->addFlash(
-    //             'success',
-    //             'La catégorie n\'a pas été trouvée'
-    //         );
-    
-    //         return $this->redirectToRoute('app_category');
-    //     }
 
-    //     $manager->remove($category);
-    //     $manager->flush();
-
-    //     $this->addFlash(
-    //         'success',
-    //         'La catégorie a été supprimée avec succès!!'
-    //     );
-
-    //     return $this->redirectToRoute('app_category');
-    // }
-
-    public function delete(EntityManagerInterface $manager, Category $category): JsonResponse
+    #[Route('/deletecat/{id}', name: 'category_delete', methods:[ 'GET'])]
+    public function delete(EntityManagerInterface $manager, Category $category) : Response
     {
         if (!$category) {
-            return new JsonResponse(['message' => 'La catégorie n\'a pas été trouvée'], Response::HTTP_NOT_FOUND);
+            $this->addFlash(
+                'success',
+                'La catégorie n\'a pas été trouvée'
+            );
+    
+            return $this->redirectToRoute('app_category');
         }
 
         $manager->remove($category);
         $manager->flush();
 
-        return new JsonResponse(['message' => 'La catégorie a été supprimée avec succès!!'], Response::HTTP_OK);
+        $this->addFlash(
+            'success',
+            'La catégorie a été supprimée avec succès!!'
+        );
+
+        return $this->redirectToRoute('app_category');
     }
 
-    private function getFormErrors($form): array
-    {
-        $errors = [];
-        foreach ($form->getErrors(true, true) as $error) {
-            $errors[] = $error->getMessage();
-        }
-        return $errors;
-    }
 }
 
 

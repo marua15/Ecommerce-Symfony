@@ -136,8 +136,7 @@
     </parameter>
     <parameter key="session.save_path">null</parameter>
     <parameter key="session.metadata.update_threshold">0</parameter>
-    <parameter key="form.type_extension.csrf.enabled">true</parameter>
-    <parameter key="form.type_extension.csrf.field_name">_token</parameter>
+    <parameter key="form.type_extension.csrf.enabled">false</parameter>
     <parameter key="validator.mapping.cache.file">C:\xampp\htdocs\EcommerceTP\var\cache\dev/validation.php</parameter>
     <parameter key="validator.translation_domain">validators</parameter>
     <parameter key="profiler_listener.only_exceptions">false</parameter>
@@ -1257,7 +1256,6 @@
         <argument>Symfony\Component\Form\Extension\Validator\Type\RepeatedTypeValidatorExtension</argument>
         <argument>Symfony\Component\Form\Extension\Validator\Type\SubmitTypeValidatorExtension</argument>
         <argument>Symfony\Component\Form\Extension\Validator\Type\UploadValidatorExtension</argument>
-        <argument>Symfony\Component\Form\Extension\Csrf\Type\FormTypeCsrfExtension</argument>
         <argument>Symfony\Component\Form\Extension\DataCollector\Type\DataCollectorTypeExtension</argument>
         <argument>Symfony\Component\Form\Extension\PasswordHasher\Type\FormTypePasswordHasherExtension</argument>
         <argument>Symfony\Component\Form\Extension\PasswordHasher\Type\PasswordTypePasswordHasherExtension</argument>
@@ -2993,22 +2991,6 @@
         </argument>
         <argument>1</argument>
       </call>
-      <call method="addListener">
-        <argument>Symfony\Component\Security\Http\Event\CheckPassportEvent</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="security.listener.csrf_protection"/>
-          <argument>checkPassport</argument>
-        </argument>
-        <argument>512</argument>
-      </call>
-      <call method="addListener">
-        <argument>Symfony\Component\Security\Http\Event\LogoutEvent</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="security.logout.listener.csrf_token_clearing"/>
-          <argument>onLogout</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
     </service>
     <service id="debug.controller_resolver" class="Symfony\Component\HttpKernel\Controller\TraceableControllerResolver">
       <tag name="monolog.logger" channel="request"/>
@@ -3426,22 +3408,6 @@
       <argument>%session.storage.options%</argument>
     </service>
     <service id="session.marshaller" class="Symfony\Component\HttpFoundation\Session\Storage\Handler\IdentityMarshaller"/>
-    <service id="security.csrf.token_generator" class="Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator"/>
-    <service id="security.csrf.token_storage" class="Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage">
-      <argument type="service" id="request_stack"/>
-    </service>
-    <service id="security.csrf.token_manager" class="Symfony\Component\Security\Csrf\CsrfTokenManager">
-      <argument type="service" id="security.csrf.token_generator"/>
-      <argument type="service" id="security.csrf.token_storage"/>
-      <argument type="service" id="request_stack" on-invalid="ignore"/>
-    </service>
-    <service id="twig.runtime.security_csrf" class="Symfony\Bridge\Twig\Extension\CsrfRuntime">
-      <tag name="twig.runtime"/>
-      <argument type="service" id="security.csrf.token_manager"/>
-    </service>
-    <service id="twig.extension.security_csrf" class="Symfony\Bridge\Twig\Extension\CsrfExtension">
-      <tag name="twig.extension"/>
-    </service>
     <service id="form.resolved_type_factory" class="Symfony\Component\Form\Extension\DataCollector\Proxy\ResolvedTypeFactoryDataCollectorProxy">
       <argument type="service">
         <service class="Symfony\Component\Form\ResolvedFormTypeFactory"/>
@@ -3465,7 +3431,6 @@
           <argument type="service" id="form.type_extension.form.http_foundation"/>
           <argument type="service" id="form.type_extension.form.validator"/>
           <argument type="service" id="form.type_extension.upload.validator"/>
-          <argument type="service" id="form.type_extension.csrf"/>
           <argument type="service" id="form.type_extension.form.data_collector"/>
           <argument type="service" id="form.type_extension.form.password_hasher"/>
         </argument>
@@ -3545,15 +3510,6 @@
       <tag name="form.type_extension"/>
       <argument type="service" id="translator.data_collector"/>
       <argument>validators</argument>
-    </service>
-    <service id="form.type_extension.csrf" class="Symfony\Component\Form\Extension\Csrf\Type\FormTypeCsrfExtension">
-      <tag name="form.type_extension"/>
-      <argument type="service" id="security.csrf.token_manager"/>
-      <argument>true</argument>
-      <argument>_token</argument>
-      <argument type="service" id="translator.data_collector" on-invalid="null"/>
-      <argument>validators</argument>
-      <argument type="service" id="form.server_params"/>
     </service>
     <service id="validator.builder" class="Symfony\Component\Validator\ValidatorBuilder">
       <call method="setConstraintValidatorFactory">
@@ -5167,9 +5123,6 @@
         <argument key="strict_variables">true</argument>
       </argument>
       <call method="addExtension">
-        <argument type="service" id="twig.extension.security_csrf"/>
-      </call>
-      <call method="addExtension">
         <argument type="service" id="twig.extension.dump"/>
       </call>
       <call method="addExtension">
@@ -5423,7 +5376,7 @@
       <argument>,</argument>
     </service>
     <service id="twig.runtime_loader" class="Twig\RuntimeLoader\ContainerRuntimeLoader">
-      <argument type="service" id=".service_locator.YmHjcFj"/>
+      <argument type="service" id=".service_locator.w1a8cbc"/>
     </service>
     <service id="twig.error_renderer.html" class="Symfony\Bridge\Twig\ErrorRenderer\TwigErrorRenderer">
       <argument type="service" id="twig"/>
@@ -5459,7 +5412,7 @@
     <service id="twig.form.renderer" class="Symfony\Component\Form\FormRenderer">
       <tag name="twig.runtime"/>
       <argument type="service" id="twig.form.engine"/>
-      <argument type="service" id="security.csrf.token_manager" on-invalid="null"/>
+      <argument>null</argument>
     </service>
     <service id="twig.command.debug" class="Symfony\Bridge\Twig\Command\DebugCommand">
       <tag name="console.command"/>
@@ -5579,7 +5532,7 @@
     <service id="security.authentication.trust_resolver" class="Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolver"/>
     <service id="security.authentication.session_strategy" class="Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy">
       <argument>migrate</argument>
-      <argument type="service" id="security.csrf.token_storage" on-invalid="ignore"/>
+      <argument>null</argument>
     </service>
     <service id="security.authentication.session_strategy_noop" class="Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy">
       <argument>none</argument>
@@ -6149,22 +6102,6 @@
         <argument type="collection">
           <argument type="service_closure" id="security.listener.password_migrating"/>
           <argument>onLoginSuccess</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
-      <call method="addListener">
-        <argument>Symfony\Component\Security\Http\Event\CheckPassportEvent</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="security.listener.csrf_protection"/>
-          <argument>checkPassport</argument>
-        </argument>
-        <argument>512</argument>
-      </call>
-      <call method="addListener">
-        <argument>Symfony\Component\Security\Http\Event\LogoutEvent</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="security.logout.listener.csrf_token_clearing"/>
-          <argument>onLogout</argument>
         </argument>
         <argument>0</argument>
       </call>
@@ -7113,6 +7050,13 @@
         <argument key="productRepository" type="service_closure" id="App\Repository\ProductRepository"/>
       </argument>
     </service>
+    <service id=".service_locator.9hQ0bXS" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="manager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="serializer" type="service_closure" id="debug.serializer"/>
+      </argument>
+    </service>
     <service id=".service_locator.Wqurr1r" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -7147,7 +7091,7 @@
         <argument key="passwordEncoder" type="service_closure" id="security.user_password_hasher"/>
       </argument>
     </service>
-    <service id=".service_locator..lcVxDt" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.s880_eV" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\CategoryController::delete" type="service_closure" id=".service_locator..TnixTc"/>
@@ -7158,7 +7102,7 @@
         <argument key="App\Controller\ProductController::delete" type="service_closure" id=".service_locator.GjE0bdT"/>
         <argument key="App\Controller\ProductController::edit" type="service_closure" id=".service_locator.Wqurr1r"/>
         <argument key="App\Controller\ProductController::index" type="service_closure" id=".service_locator.LBiO.oa"/>
-        <argument key="App\Controller\ProductController::new" type="service_closure" id=".service_locator.V71r_w4"/>
+        <argument key="App\Controller\ProductController::new" type="service_closure" id=".service_locator.9hQ0bXS"/>
         <argument key="App\Controller\SecurityController::login" type="service_closure" id=".service_locator.rSTd.nA"/>
         <argument key="App\Controller\SecurityController::logout" type="service_closure" id=".service_locator.sykBD6D"/>
         <argument key="App\Controller\SecurityController::registration" type="service_closure" id=".service_locator.jlY.6Bo"/>
@@ -7174,7 +7118,7 @@
         <argument key="App\Controller\ProductController:delete" type="service_closure" id=".service_locator.GjE0bdT"/>
         <argument key="App\Controller\ProductController:edit" type="service_closure" id=".service_locator.Wqurr1r"/>
         <argument key="App\Controller\ProductController:index" type="service_closure" id=".service_locator.LBiO.oa"/>
-        <argument key="App\Controller\ProductController:new" type="service_closure" id=".service_locator.V71r_w4"/>
+        <argument key="App\Controller\ProductController:new" type="service_closure" id=".service_locator.9hQ0bXS"/>
         <argument key="App\Controller\SecurityController:login" type="service_closure" id=".service_locator.rSTd.nA"/>
         <argument key="App\Controller\SecurityController:logout" type="service_closure" id=".service_locator.sykBD6D"/>
         <argument key="App\Controller\SecurityController:registration" type="service_closure" id=".service_locator.jlY.6Bo"/>
@@ -7498,14 +7442,6 @@
       <argument type="service" id="security.access.expression_voter"/>
       <argument type="service" id="debug.event_dispatcher"/>
     </service>
-    <service id="security.listener.csrf_protection" class="Symfony\Component\Security\Http\EventListener\CsrfProtectionListener">
-      <tag name="kernel.event_subscriber"/>
-      <argument type="service" id="security.csrf.token_manager"/>
-    </service>
-    <service id="security.logout.listener.csrf_token_clearing" class="Symfony\Component\Security\Http\EventListener\CsrfTokenClearingLogoutListener">
-      <tag name="kernel.event_subscriber"/>
-      <argument type="service" id="security.csrf.token_storage"/>
-    </service>
     <service id="security.ldap_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <argument type="collection"/>
     </service>
@@ -7721,7 +7657,6 @@
         <argument key="request_stack" type="service_closure" id="request_stack" on-invalid="ignore"/>
         <argument key="router" type="service_closure" id="router.default" on-invalid="ignore"/>
         <argument key="security.authorization_checker" type="service_closure" id="security.authorization_checker" on-invalid="ignore"/>
-        <argument key="security.csrf.token_manager" type="service_closure" id="security.csrf.token_manager" on-invalid="ignore"/>
         <argument key="security.token_storage" type="service_closure" id="security.token_storage" on-invalid="ignore"/>
         <argument key="serializer" type="service_closure" id="debug.serializer" on-invalid="ignore"/>
         <argument key="twig" type="service_closure" id="twig" on-invalid="ignore"/>
@@ -7877,7 +7812,6 @@
         <argument key="request_stack" type="service_closure" id="request_stack"/>
         <argument key="security.authenticator.managers_locator" type="service_closure" id="security.authenticator.managers_locator" on-invalid="ignore"/>
         <argument key="security.authorization_checker" type="service_closure" id="security.authorization_checker"/>
-        <argument key="security.csrf.token_manager" type="service_closure" id="security.csrf.token_manager" on-invalid="ignore"/>
         <argument key="security.firewall.event_dispatcher_locator" type="service_closure" id="security.firewall.event_dispatcher_locator"/>
         <argument key="security.firewall.map" type="service_closure" id="security.firewall.map"/>
         <argument key="security.token_storage" type="service_closure" id="security.token_storage"/>
@@ -8028,12 +7962,12 @@
     <service id="debug.argument_resolver.request.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver"/>
     <service id="debug.argument_resolver.session.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver"/>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator..lcVxDt"/>
+      <argument type="service" id=".service_locator.s880_eV"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator..lcVxDt"/>
+      <argument type="service" id=".service_locator.s880_eV"/>
     </service>
     <service id="debug.traced.messenger.bus.default.inner" class="Symfony\Component\Messenger\MessageBus">
       <argument type="iterator">
@@ -8853,10 +8787,9 @@
       <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
-    <service id=".service_locator.YmHjcFj" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.w1a8cbc" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="Symfony\Bridge\Twig\Extension\CsrfRuntime" type="service_closure" id="twig.runtime.security_csrf"/>
         <argument key="Symfony\Bridge\Twig\Extension\HttpKernelRuntime" type="service_closure" id="twig.runtime.httpkernel"/>
         <argument key="Symfony\Bridge\Twig\Extension\SerializerRuntime" type="service_closure" id="twig.runtime.serializer"/>
         <argument key="Symfony\Component\Form\FormRenderer" type="service_closure" id="twig.form.renderer"/>
@@ -8938,9 +8871,6 @@
     <service id="SessionHandlerInterface" alias="session.handler.native"/>
     <service id="session.storage.factory" alias="session.storage.factory.native"/>
     <service id="session.handler" alias="session.handler.native"/>
-    <service id="Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface" alias="security.csrf.token_generator"/>
-    <service id="Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface" alias="security.csrf.token_storage"/>
-    <service id="Symfony\Component\Security\Csrf\CsrfTokenManagerInterface" alias="security.csrf.token_manager"/>
     <service id="Symfony\Component\Form\ResolvedFormTypeFactoryInterface" alias="form.resolved_type_factory"/>
     <service id="Symfony\Component\Form\FormRegistryInterface" alias="form.registry"/>
     <service id="Symfony\Component\Form\FormFactoryInterface" alias="form.factory"/>
@@ -9006,7 +8936,7 @@
     <service id="Knp\Component\Pager\ArgumentAccess\ArgumentAccessInterface" alias="Knp\Component\Pager\ArgumentAccess\RequestArgumentAccess"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator..lcVxDt"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.s880_eV"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface $requestLogger" alias="monolog.logger.request"/>
@@ -9032,7 +8962,7 @@
     <service id=".service_locator.QR.RBYy" alias=".service_locator..TnixTc"/>
     <service id=".service_locator.j5C2uM9" alias=".service_locator.LBiO.oa"/>
     <service id=".service_locator.KazDNTm" alias=".service_locator.Wqurr1r"/>
-    <service id=".service_locator.bilzMtk" alias=".service_locator..lcVxDt"/>
+    <service id=".service_locator..aBE6AG" alias=".service_locator.s880_eV"/>
     <service id=".service_locator.9XMoc9I" alias=".service_locator.kzegaci"/>
     <service id=".service_locator.EbQKjVD" alias=".service_locator.Zzo1NSi"/>
     <service id=".service_locator.XW18Svm" alias=".service_locator.TcKhdzh"/>
@@ -9089,12 +9019,13 @@
     <service id=".service_locator.1rNvgbP" alias=".service_locator..TnixTc"/>
     <service id=".service_locator.js1hwUF" alias=".service_locator.3opkxl5"/>
     <service id=".service_locator.2Xea3z0" alias=".service_locator.LBiO.oa"/>
+    <service id=".service_locator.4kj6S6f" alias=".service_locator.9hQ0bXS"/>
     <service id=".service_locator.LfyZkZH" alias=".service_locator.Wqurr1r"/>
     <service id=".service_locator.nBokQ9m" alias=".service_locator.GjE0bdT"/>
     <service id=".service_locator.7NIAq8D" alias=".service_locator.rSTd.nA"/>
     <service id=".service_locator.TJIFlJM" alias=".service_locator.sykBD6D"/>
     <service id=".service_locator.WBJwTXr" alias=".service_locator.jlY.6Bo"/>
-    <service id=".service_locator.Kyflpr1" alias=".service_locator.CshazM0"/>
+    <service id=".service_locator.Fjkdxcy" alias=".service_locator.CshazM0"/>
     <service id=".service_locator.u6DWx23" alias=".service_locator.cXsfP3P"/>
     <service id=".service_locator.hnz5ZNh" alias=".service_locator.0TACwl3"/>
     <service id=".service_locator.BlxN3Cw" alias=".service_locator.LrCXAmX"/>

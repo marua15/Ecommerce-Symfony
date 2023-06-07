@@ -15,19 +15,58 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends AbstractController
 {
     #[Route('/category', name: 'app_category', methods:['GET'])]
+    /**
+     * Summary of index
+     * @param \App\Repository\CategoryRepository $repository
+     * @param \Knp\Component\Pager\PaginatorInterface $paginator
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function index(CategoryRepository $repository, PaginatorInterface $paginator,
-    Request $request): Response
+    Request $request,EntityManagerInterface $entityManager): Response
     {
-        $categories=$paginator->paginate(
-            $repository->findAll(),
-            $request->query->getInt('page', 1),
-            4
-        );
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->render('pages/home/home.html.twig');
+        }
+
+        $user = $this->getUser();
+        $roles = $user->getRoles();
+
+        if(in_array('ROLE_ADMIN', $roles)){
+            $categories=$paginator->paginate(
+                $repository->findAll(),
+                $request->query->getInt('page', 1),
+                4
+            );
 
 
-        return $this->render('pages/category/listecat.html.twig', [
+           return $this->render('pages/category/listecat.html.twig', [
             'categories'=>$categories,
         ]);
+        } else  if (in_array('ROLE_USER', $roles)) {
+
+           
+            $category = $paginator->paginate(
+                $entityManager->getRepository(Category::class)->findAll(),
+                $request->query->getInt('page', 1), /*page number*/
+                3 /*limit per page*/
+            );
+            
+                    if (!$category) {
+                        throw $this->createNotFoundException(
+                            'No category found in our DATABASE !'
+                        );
+                    }
+            
+                    return $this->render('pages/client/categories.html.twig', [
+                        'categories' => $category,
+                        
+                    ]);
+        
+        }
+        
+
+        
     }
 
 

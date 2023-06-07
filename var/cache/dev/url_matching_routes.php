@@ -16,6 +16,8 @@ return [
         '/_profiler/open' => [[['_route' => '_profiler_open_file', '_controller' => 'web_profiler.controller.profiler::openAction'], null, null, null, false, false, null]],
         '/category' => [[['_route' => 'app_category', '_controller' => 'App\\Controller\\CategoryController::index'], null, ['GET' => 0], null, false, false, null]],
         '/newcat' => [[['_route' => 'category_new', '_controller' => 'App\\Controller\\CategoryController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        '/client' => [[['_route' => 'app_client', '_controller' => 'App\\Controller\\ClientController::index'], null, null, null, false, false, null]],
+        '/user/cart' => [[['_route' => 'cart_Page', '_controller' => 'App\\Controller\\ClientController::cart'], null, null, null, true, false, null]],
         '/' => [[['_route' => 'home.index', '_controller' => 'App\\Controller\\HomeController::index'], null, ['GET' => 0], null, false, false, null]],
         '/product' => [[['_route' => 'app_product', '_controller' => 'App\\Controller\\ProductController::index'], null, ['GET' => 0], null, false, false, null]],
         '/newprod' => [[['_route' => 'product_new', '_controller' => 'App\\Controller\\ProductController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
@@ -48,6 +50,15 @@ return [
                     .'|cat/([^/]++)(*:241)'
                     .'|prod/([^/]++)(*:262)'
                 .')'
+                .'|/user/(?'
+                    .'|cart/([^/]++)(*:293)'
+                    .'|delete/([^/]++)(*:316)'
+                .')'
+                .'|/cart/(?'
+                    .'|add/([^/]++)(*:346)'
+                    .'|delete/([^/]++)(*:369)'
+                .')'
+                .'|/product([^/]++)(*:394)'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
@@ -61,8 +72,13 @@ return [
         189 => [[['_route' => 'category_edit', '_controller' => 'App\\Controller\\CategoryController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
         210 => [[['_route' => 'product_edit', '_controller' => 'App\\Controller\\ProductController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
         241 => [[['_route' => 'category_delete', '_controller' => 'App\\Controller\\CategoryController::delete'], ['id'], ['GET' => 0], null, false, true, null]],
-        262 => [
-            [['_route' => 'product_delete', '_controller' => 'App\\Controller\\ProductController::delete'], ['id'], ['GET' => 0], null, false, true, null],
+        262 => [[['_route' => 'product_delete', '_controller' => 'App\\Controller\\ProductController::delete'], ['id'], ['GET' => 0], null, false, true, null]],
+        293 => [[['_route' => 'cart_Page_Admin', '_controller' => 'App\\Controller\\ClientController::cartAdmin'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        316 => [[['_route' => 'user_delete', '_controller' => 'App\\Controller\\ClientController::deleteP'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        346 => [[['_route' => 'addToCart', '_controller' => 'App\\Controller\\ClientController::addToCart'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        369 => [[['_route' => 'deleteFromCart', '_controller' => 'App\\Controller\\ClientController::deleteFromCart'], ['id'], ['GET' => 0, 'POST' => 1], null, false, true, null]],
+        394 => [
+            [['_route' => 'details_product', '_controller' => 'App\\Controller\\ProductController::detailsProd'], ['id'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
     ],

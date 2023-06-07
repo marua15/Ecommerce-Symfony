@@ -23,6 +23,9 @@ class SecurityController extends AbstractController
             'last_username' => $authenticationUtils->getLastUsername(),
             'error' => $authenticationUtils->getLastAuthenticationError()
         ]);
+
+        
+
     }
    
     // This controller allows us to logout
@@ -38,7 +41,7 @@ class SecurityController extends AbstractController
     public function registration(Request $request, EntityManagerInterface $manager) : Response
     {
         $user = new User();
-        $user->setRoles(['ROLE_USER']);            ;
+        $user->setRoles(['ROLE_CLIENT']);            ;
 
         $form = $this->createForm(RegistrationType::class, $user);
 
@@ -57,7 +60,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('security.login');
         }
         
-        return $this->render('pages/product/listeprod.html.twig', [
+        return $this->render('pages/security/registration.html.twig', [
             'form' => $form->createView()
         ]);
     }

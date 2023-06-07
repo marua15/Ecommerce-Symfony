@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Entity\Product;
 
 #[UniqueEntity('name')]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
@@ -65,7 +66,7 @@ class Category
     {
         if (!$this->produits->contains($produit)) {
             $this->produits->add($produit);
-            $produit->setCategory($this);
+            $produit->setCategoryId($this);
         }
 
         return $this;
@@ -75,8 +76,8 @@ class Category
     {
         if ($this->produits->removeElement($produit)) {
             // set the owning side to null (unless already changed)
-            if ($produit->getCategory() === $this) {
-                $produit->setCategory(null);
+            if ($produit->getCategoryId() === $this) {
+                $produit->setCategoryId(null);
             }
         }
 
@@ -95,7 +96,7 @@ class Category
     {
         if (!$this->category->contains($category)) {
             $this->category->add($category);
-            $category->setCategory($this);
+            $category->setCategoryId($this);
         }
 
         return $this;
@@ -105,8 +106,8 @@ class Category
     {
         if ($this->category->removeElement($category)) {
             // set the owning side to null (unless already changed)
-            if ($category->getCategory() === $this) {
-                $category->setCategory(null);
+            if ($category->getCategoryId() === $this) {
+                $category->setCategoryId(null);
             }
         }
 

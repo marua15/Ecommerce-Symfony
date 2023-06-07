@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+
+     {% block header %}
+          {% include '_partials/_headerForAdmin.html.twig' %}
+     {% endblock %}
+     {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <style>
+        body{background:#eee}.ratings i{font-size: 16px;color: red}.strike-text{color: red;text-decoration: line-through}.product-image{width: 100%}.dot{height: 7px;width: 7px;margin-left: 6px;margin-right: 6px;margin-top: 3px;background-color: blue;border-radius: 50%;display: inline-block}.spec-1{color: #938787;font-size: 15px}h5{font-weight: 400}.para{font-size: 16px}    
+     </style>
+        {% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+     <h1>Cart of {{user.fullName}} </h1>
+     {% for message in app.flashes('success') %}
+     <div class="alert alert-success">
+         {{ message }}
+     </div>
+ {% endfor %} 
+ {% for message in app.flashes('danger') %}
+     <div class="alert alert-danger">
+         {{ message }}
+     </div>
+ {% endfor %}
+
+ <div class="alert alert-success">
+   the total price in {{user.fullName}}'s Cart is $ {{ totalPrice|number_format(2)}} 
+</div>
+     <table class="table table-striped">
+          <thead>
+               <tr>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+               </tr>
+          </thead>
+          <tbody>
+               {% for product in products %}
+               <tr>
+                    <td>{{product.name}}</td>
+                    <td>{{product.Category.name}}</td>
+                    <td>${{product.price|number_format(2)}}</td>
+               </tr>             
+               {% endfor %}
+          </tbody>
+     </table>
+</div>
+
+{% endblock %}
+

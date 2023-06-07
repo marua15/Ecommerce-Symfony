@@ -21,6 +21,10 @@ class ProductController extends AbstractController
     Request $request ): Response
     {
         // dd($product);
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->render('pages/home/home.html.twig');
+        }
+        
         $products = $paginator->paginate(
             $productRepository->findAll(),
             $request->query->getInt('page', 1), 
@@ -29,10 +33,34 @@ class ProductController extends AbstractController
 
         return $this->render('pages/product/listeprod.html.twig', [
             // 'controller_name' => 'ProductController', 
-            'products' =>  $products
+            'products' =>  $products,
+            'user'=>$this->getUser()
         ]);
     }
 
+    #[Route('/product{id}', name:'details_product')]
+    public function detailsProd(Product $product):Response
+    {
+        if (!$this->getUser() || !$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->render('pages/home/home.html.twig');
+        }
+        $user = $this->getUser();
+        $roles = $user->getRoles();
+    
+
+       if (in_array('ROLE_ADMIN', $roles)) {
+
+        return $this->render('pages/product/listeprod.html.twig', [
+               'product' => $product,
+        ]);
+        }elseif (in_array('ROLE_USER', $roles)) {
+
+            return $this->render('pages/client/singleProduct.html.twig', [
+                   'product' => $product,
+            ]);
+            }
+            return $this->render('pages/home/pages/home.html.twig');
+    }
 
     #[Route('/newprod', name: 'product_new', methods:['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager) : Response

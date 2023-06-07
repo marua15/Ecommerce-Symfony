@@ -20,6 +20,7 @@ class AppFixtures extends Fixture
      */
     private Generator $faker;
 
+    
 
     public function __construct()
     {
@@ -30,6 +31,18 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+
+        $plaintextPassword = '123';
+         // create admin user
+        $admin = new User();
+        $admin->setFullName('Admin')
+        ->setPseudo('ADMIN')
+          ->setEmail('marouaamal@gmail.com')
+          ->setRoles(['ROLE_ADMIN'])
+          ->setplainPassword($plaintextPassword);
+
+
+    $manager->persist($admin);
         // Products
                 // Categories
                 for ($j=1; $j <5 ; $j++) { 
@@ -43,7 +56,7 @@ class AppFixtures extends Fixture
                             ->setDescription('Description for Product '.$i)
                             ->setInStock(mt_rand(0,50))
                                 ->setPrice(mt_rand(0,100))
-                                ->setImgPath('images/img1'.$i.'.png')
+                                ->setImgPath('Images/img1.png')
                                 ->setCategoryId($category);
                             $manager->persist($product);
         }
@@ -53,7 +66,7 @@ class AppFixtures extends Fixture
             $user->setFullName($this->faker->name())
                 ->setPseudo(mt_rand(0, 1) === 1 ? $this->faker->firstName() : null)
                 ->setEmail($this->faker->email())
-                ->setRoles(['ROLE_USER'])
+                ->setRoles(['ROLE_CLIENT'])
                 ->setPlainPassword('password');
 
             

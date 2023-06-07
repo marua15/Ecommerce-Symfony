@@ -3,9 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Category;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[UniqueEntity('name')]
@@ -38,11 +41,15 @@ class Product
     #[ORM\Column(length: 255)]
     private ?string $imgPath = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'Cart')]
+    private Collection $users;
+
     
 
     public function __construct(){
 
         $this->createdAt = new \DateTimeImmutable();
+        $this->users = new ArrayCollection();
     }
 
 
@@ -131,6 +138,33 @@ class Product
     public function setImgPath(string $imgPath): self
     {
         $this->imgPath = $imgPath;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addCart($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeCart($this);
+        }
 
         return $this;
     }

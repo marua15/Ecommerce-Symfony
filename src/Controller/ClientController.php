@@ -132,7 +132,7 @@ class ClientController extends AbstractController
             'danger',
             'The product '.$user->getFullName().' was Deleted successfully!'
          );
-        return $this->redirectToRoute('home_Page');  
+        return $this->redirectToRoute('app_client');  
       } 
 
       #[Route('/cart/add/{id}',name:"addToCart",methods:['GET','POST'])]
@@ -156,7 +156,7 @@ class ClientController extends AbstractController
                 'danger',
                 'Product Already existe in you cart List '
              );
-             return $this->redirectToRoute('home_Page');  
+             return $this->redirectToRoute('app_client');  
            }else
          {
              $user->addCart($product);
@@ -167,7 +167,7 @@ class ClientController extends AbstractController
                   'success',
                   'Product Added successfully '
                );
-               return $this->redirectToRoute('home_Page');  
+               return $this->redirectToRoute('app_client');  
          }
 
         return $this->render('pages/home/home.html.twig');
@@ -194,7 +194,7 @@ class ClientController extends AbstractController
                   'danger',
                   'Product deleted successfully '
                );
-               return $this->redirectToRoute('home_Page');  
+               return $this->redirectToRoute('app_client');  
          
 
  
